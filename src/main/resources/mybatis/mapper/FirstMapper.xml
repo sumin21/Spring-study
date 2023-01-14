@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    [템플릿 설명]
+    - 해당 파일은 SQL 문을 작성하는 곳입니다.
+-->
+<mapper namespace="hello.springmvc.first.mapper.FirstMapper">
+
+    <select id="selectUserList" resultType="java.util.HashMap">
+        SELECT id,
+        name
+        FROM public."user";
+    </select>
+
+    <select id="selectUserById" resultType="hello.springmvc.first.DTO.FirstDTO">
+        SELECT id,
+        name
+        FROM public."user"
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertUser" parameterType="hello.springmvc.first.DTO.FirstDTO">
+        INSERT INTO public."user"(name)
+        values (#{name});
+    </insert>
+
+    <update id="updateUser" parameterType="hello.springmvc.first.DTO.FirstDTO">
+        UPDATE public."user"
+        SET name= #{name}
+        WHERE id = #{id}
+    </update>
+
+    <!--테이블 row delete-->
+    <delete id="deleteUserById">
+        DELETE
+        FROM public."user"
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
