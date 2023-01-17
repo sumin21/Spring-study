@@ -1,9 +1,12 @@
 package hello.springmvc.first.Service;
 
 import hello.springmvc.first.DTO.FirstDTO;
+import hello.springmvc.first.Exceptions.ErrorCode;
+import hello.springmvc.first.Exceptions.NotFoundException;
 import hello.springmvc.first.mapper.FirstMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -19,7 +22,9 @@ public class FirstServiceImpl implements FirstService{
 
     @Override
     public FirstDTO selectUserById(Integer userId) {
-        return firstMapper.selectUserById(userId);
+        FirstDTO findUser =  firstMapper.selectUserById(userId);
+        if(findUser == null) throw new NotFoundException(ErrorCode.NOT_FOUND);
+        return findUser;
     }
 
     @Override
