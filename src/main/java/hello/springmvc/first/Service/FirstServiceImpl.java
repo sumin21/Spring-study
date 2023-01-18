@@ -1,6 +1,7 @@
 package hello.springmvc.first.Service;
 
 import hello.springmvc.first.DTO.FirstDTO;
+import hello.springmvc.first.DTO.TokenDTO;
 import hello.springmvc.first.Exceptions.ErrorCode;
 import hello.springmvc.first.Exceptions.NotFoundException;
 import hello.springmvc.first.mapper.FirstMapper;
@@ -30,6 +31,15 @@ public class FirstServiceImpl implements FirstService{
     @Override
     public int insertUser(FirstDTO userDto) {
         return firstMapper.insertUser(userDto);
+    }
+
+    @Override
+    public TokenDTO loginUser(FirstDTO userDto) {
+        FirstDTO findUser =  firstMapper.selectUserById(userDto.getId());
+        if(findUser == null) throw new NotFoundException(ErrorCode.NOT_FOUND);
+        // userId로 JWT 생성
+//        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        return null;
     }
 
     @Override

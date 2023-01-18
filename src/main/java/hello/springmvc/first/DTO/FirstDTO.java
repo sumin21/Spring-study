@@ -1,7 +1,8 @@
 package hello.springmvc.first.DTO;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor
