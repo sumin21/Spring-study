@@ -20,6 +20,13 @@
         WHERE id = #{id}
     </select>
 
+    <select id="selectUserByName" resultType="hello.springmvc.first.DTO.FirstDTO">
+        SELECT id,
+        name
+        FROM public."user"
+        WHERE name = #{name}
+    </select>
+
     <insert id="insertUser" parameterType="hello.springmvc.first.DTO.FirstDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO public."user"(name)
         values (#{name});

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,13 @@ public class FirstServiceImpl implements FirstService{
 
     @Override
     public FirstDTO selectUserById(Integer userId) {
-        FirstDTO findUser =  firstMapper.selectUserById(userId);
-        if(findUser == null) throw new NotFoundException(ErrorCode.NOT_FOUND);
+        FirstDTO findUser =  Optional.ofNullable(firstMapper.selectUserById(userId)).orElseThrow(() -> new NotFoundException());
+        return findUser;
+    }
+
+    @Override
+    public FirstDTO selectUserByName(String userName) {
+        FirstDTO findUser =  Optional.ofNullable(firstMapper.selectUserByName(userName)).orElseThrow(() -> new NotFoundException());
         return findUser;
     }
 
@@ -35,8 +41,8 @@ public class FirstServiceImpl implements FirstService{
 
     @Override
     public TokenDTO loginUser(FirstDTO userDto) {
-        FirstDTO findUser =  firstMapper.selectUserById(userDto.getId());
-        if(findUser == null) throw new NotFoundException(ErrorCode.NOT_FOUND);
+        FirstDTO findUser =  Optional.ofNullable(firstMapper.selectUserById(userDto.getId())).orElseThrow(() -> new NotFoundException());
+        if(findUser == null) throw new NotFoundException();
         // userId로 JWT 생성
 //        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
         return null;

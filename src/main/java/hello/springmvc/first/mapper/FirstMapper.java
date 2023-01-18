@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * - 해당 파일은 xml 파일과 1:1 매핑되는 인터페이스 입니다. (환경파일 내에서 지정함)
@@ -18,6 +19,7 @@ import java.util.List;
 public interface FirstMapper {
     List<FirstDTO> selectUserList();
     FirstDTO selectUserById(Integer userId);
+    FirstDTO selectUserByName(String userName);
     int insertUser(FirstDTO userDto);
     int updateUser(FirstDTO userDto);
     int deleteUserById(Integer userId);
