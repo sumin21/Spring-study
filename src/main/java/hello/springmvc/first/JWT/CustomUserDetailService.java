@@ -18,8 +18,8 @@ public class CustomUserDetailService implements UserDetailsService {
     private final FirstMapper firstMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        FirstDTO findUser = Optional.ofNullable(firstMapper.selectUserByName(userName)).orElseThrow(() -> new NotFoundException());
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        FirstDTO findUser = Optional.ofNullable(firstMapper.selectUserById(Integer.valueOf(userId))).orElseThrow(() -> new NotFoundException());
         return UserPrincipal.create(findUser);
     }
 }

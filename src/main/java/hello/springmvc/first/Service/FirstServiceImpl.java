@@ -4,6 +4,7 @@ import hello.springmvc.first.DTO.FirstDTO;
 import hello.springmvc.first.DTO.TokenDTO;
 import hello.springmvc.first.Exceptions.ErrorCode;
 import hello.springmvc.first.Exceptions.NotFoundException;
+import hello.springmvc.first.JWT.JwtTokenProvider;
 import hello.springmvc.first.mapper.FirstMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FirstServiceImpl implements FirstService{
     private final FirstMapper firstMapper;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public List<FirstDTO> selectUserList() {
@@ -42,10 +44,10 @@ public class FirstServiceImpl implements FirstService{
     @Override
     public TokenDTO loginUser(FirstDTO userDto) {
         FirstDTO findUser =  Optional.ofNullable(firstMapper.selectUserById(userDto.getId())).orElseThrow(() -> new NotFoundException());
-        if(findUser == null) throw new NotFoundException();
         // userId로 JWT 생성
-//        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
-        return null;
+        String accessToken = jwtTokenProvider.createAccessToken(findUser.getId());
+        TokenDTO tokenDTO = new TokenDTO(accessToken);
+        return tokenDTO;
     }
 
     @Override
