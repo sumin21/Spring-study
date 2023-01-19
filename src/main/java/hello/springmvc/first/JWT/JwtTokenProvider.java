@@ -1,5 +1,6 @@
 package hello.springmvc.first.JWT;
 
+import hello.springmvc.first.Exceptions.ErrorCode;
 import hello.springmvc.first.Exceptions.JwtException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ public class JwtTokenProvider {
     private String secretKey = "secretKey";
 
     // 토큰 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime = 1 * 60 * 1000L;
 
     // JWT 토큰 생성
     private String createToken(final long payload, final String secretKey, final Long tokenValidTime) {
@@ -41,15 +42,20 @@ public class JwtTokenProvider {
         }
     }
 
-    public boolean validateToken(String accessToken) {
+    public ErrorCode validateToken(String accessToken) {
+        System.out.println(accessToken);
         try {
             var claims = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(accessToken);
-
-            return !claims.getBody().getExpiration().before(new Date());
+            if(!claims.getBody().getExpiration().before(new Date()) == false) {
+                return ErrorCode.FAIL_AUTHENTICATION;
+            }
+            return null;
+        } catch (ExpiredJwtException e){
+            return ErrorCode.TOKEN_EXPIRED;
         } catch (Exception e) {
-            return false;
+            return ErrorCode.FAIL_AUTHENTICATION;
         }
     }
 }

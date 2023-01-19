@@ -63,6 +63,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .exceptionHandling()
                 .authenticationEntryPoint(((request, response, authException) -> {
+                    if(request.getAttribute("exception") == ErrorCode.TOKEN_EXPIRED){
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                        objectMapper.writeValue(
+                                response.getOutputStream(),
+                                ErrorResponse.of(ErrorCode.TOKEN_EXPIRED)
+                        );
+                    }
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     objectMapper.writeValue(
