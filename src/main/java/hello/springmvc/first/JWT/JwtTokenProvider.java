@@ -43,7 +43,6 @@ public class JwtTokenProvider {
     }
 
     public ErrorCode validateToken(String accessToken) {
-        System.out.println(accessToken);
         try {
             var claims = Jwts.parser()
                     .setSigningKey(secretKey)

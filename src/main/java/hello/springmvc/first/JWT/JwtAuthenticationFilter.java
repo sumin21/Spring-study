@@ -35,8 +35,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
         var accessToken = resolveToken(request);
-        System.out.println("accessToken = " + accessToken);
         ErrorCode errorCode = jwtProvider.validateToken(accessToken);
+
         if (accessToken != null && errorCode==null) {
             try {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(jwtProvider.getAccessTokenPayload(accessToken)));
@@ -51,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         }
+
         request.setAttribute("exception", errorCode);
         filterChain.doFilter(request, response);
     }
