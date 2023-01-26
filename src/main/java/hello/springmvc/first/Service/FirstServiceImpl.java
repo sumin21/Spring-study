@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FirstServiceImpl implements FirstService{
     private final FirstMapper firstMapper;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -26,8 +27,8 @@ public class FirstServiceImpl implements FirstService{
 
     @Override
     public FirstDTO selectUserById(Integer userId) {
-        FirstDTO findUser =  Optional.ofNullable(firstMapper.selectUserById(userId)).orElseThrow(() -> new NotFoundException());
-        return findUser;
+        return Optional.ofNullable(firstMapper.selectUserById(userId))
+                .orElseThrow(NotFoundException::new);
     }
 
     @Override
